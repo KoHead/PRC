@@ -1,0 +1,9 @@
+Flask
+paramiko
+sphinx
+Flask-HTTPAuth==2.2.0
+Flask-SQLAlchemy==1.0
+MarkupSafe==0.18
+SQLAlchemy==0.8.3
+itsdangerous==0.23
+passlib==1.6.1

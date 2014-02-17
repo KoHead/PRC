@@ -1,0 +1,11 @@
+<!doctype html>
+<title> TITRE </title>
+<div class="content">
+	<h2> TEST </h2>
+	<form method="POST" action ="/">
+		{% for field in form %}
+			{{ field.label }}
+			{{ field }} <br />
+		{% endfor %}
+	</form>
+</div>

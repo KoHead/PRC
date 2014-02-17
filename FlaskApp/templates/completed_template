@@ -1,0 +1,6 @@
+<!doctype html>
+<title> Serveurs Selectionnés</title>
+<div class="content">
+	<h2> Servers Selected </h2>
+	<div>{{ server }}</div>
+</div>
