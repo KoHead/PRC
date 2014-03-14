@@ -3,7 +3,7 @@
    :synopsis: This API can update the MX configuration of postfix server connected to PCR.
    ..moduleauthor:: Damien Mathieu <damien.mathieu@adthink-media.com>
 """
-from system import return_listserver, return_domains, return_domain_values, return_domain_deleted, return_domain_added, return_domain_updated, return_get_transport, return_add_transport, return_del_transport
+from system import return_listserver, return_domains, return_domain_values, return_domain_deleted, return_domain_added, return_domain_updated, return_get_transport, return_add_transport, return_del_transport, return_del_queue
 
 from flask import Flask, abort, request, jsonify, g, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -83,9 +83,9 @@ def new_user():
 
 @app.route('/api/users/<int:id>')
 def get_user(id):
-    """Return the username of user. 
+    """Return the username of user.
        URL Structure with curl:
-             curl -i -X POST -H "Content-Type: application/json" -d '{"username":"miguel","password":"python"}' http://127.0.0.1:5000/api/users   
+             curl -i -X POST -H "Content-Type: application/json" -d '{"username":"miguel","password":"python"}' http://127.0.0.1:5000/api/users
        Args:
 	int. : User id
        Raises:
@@ -119,7 +119,7 @@ def main_page():
     """
     #We get the current username
     username = str(g.user.username)
-    #And we give this username to "return_listserver". The goal is determinate the Business Unit of current user 
+    #And we give this username to "return_listserver". The goal is determinate the Business Unit of current user
     list_server=return_listserver(username)
     return jsonify(results=list_server)
 
@@ -138,7 +138,7 @@ def get_domains(hostname):
     """
     #We get the current username
     username = str(g.user.username)
-    #And we give this username to "return_listserver". The goal is determinate the Business Unit of current user 
+    #And we give this username to "return_listserver". The goal is determinate the Business Unit of current user
     result_domains=return_domains(hostname, username)
     return jsonify(results=result_domains)
 
@@ -200,7 +200,7 @@ def add_domain(hostname, domain_name, value1, value2, value3):
     """
     #We get the current username
     username = str(g.user.username)
-    #And we give this username to "return_listserver". The goal is determinate the Business Unit of current user 
+    #And we give this username to "return_listserver". The goal is determinate the Business Unit of current user
     result=return_domain_added(hostname, domain_name, value1, value2, value3, username)
     return jsonify(results=result)
 
@@ -221,7 +221,7 @@ def update_domain(hostname, domain_name, value1, value2, value3):
     """
     #We get the current username
     username = str(g.user.username)
-    #And we give this username to "return_listserver". The goal is determinate the Business Unit of current user 
+    #And we give this username to "return_listserver". The goal is determinate the Business Unit of current user
     result=return_domain_updated(hostname, domain_name, value1, value2, value3, username)
     return jsonify(results=result)
 
@@ -239,7 +239,7 @@ def get_transport(hostname, domain_name):
     """
     #We get the current username
     username = str(g.user.username)
-    #And we give this username to "return_listserver". The goal is determinate the Business Unit of current user 
+    #And we give this username to "return_listserver". The goal is determinate the Business Unit of current user
     result=return_get_transport(hostname,domain_name, username)
     return jsonify(results=result)
 
@@ -279,6 +279,17 @@ def del_transport(hostname, domain_name, domain_extension):
     #And we give this username to "return_listserver". The goal is determinate the Business Unit of current user
     result=return_del_transport(hostname, domain_name, domain_extension, username)
     return jsonify(results=result)
+
+
+@app.route("/del-queue/<hostname>")
+@auth.login_required
+def del_queue(hostname):
+    """ Delete the postfix queue
+    """
+    #We get the current username
+    username = str(g.user.username)
+    esult=return_del_queue(hostname, username)
+    eturn jsonify(results=result)
 
 if __name__ == '__main__':
     """ Launch flask server

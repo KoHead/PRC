@@ -511,3 +511,24 @@ def return_del_transport(hostname, domain_name, domain_extension, username):
 
     # Disconnect from the host
     myconnection.close()
+
+ def return_del_queue(hostname, username):
+     """Delete the postfix queue
+     Args:
+      hostname (str): The hostname
+     """
+     #Established the connection
+     myconnection = ssh_connection(hostname, username)
+     if myconnection == 1:
+         return "Connection to %s failed" % hostname
+     else:
+         #Empty the queue
+         commandline="sudo /usr/sbin/postsuper -d ALL"
+         stdin, stdout, stderr = myconnection.exec_command(commandline)
+         if stderr.read():
+             return "Problem with the queue. Not flushed. Please contact system administrator (admin@adthink-media.com)!"
+         else:
+             return "The postfix queue on (%s) has been flushed" % (hostname)
+
+     # Disconnect from the host
+     myconnection.close()
